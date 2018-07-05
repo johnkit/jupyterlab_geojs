@@ -117,7 +117,7 @@ const rendererFactory: IRenderMime.IRendererFactory = {
 
 export
 const GeoJSExtension: IRenderMime.IExtension = {
-  id: 'jupyterlab_geojs:factory',
+  id: 'jupyterlab_geojs:geojs_factory',
   rendererFactory,
   rank: 0,
   dataType: 'json',
