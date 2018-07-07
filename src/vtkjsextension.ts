@@ -4,6 +4,8 @@ import { Widget } from '@phosphor/widgets';
 
 import '../style/index.css';
 
+import * as vtkpointcloud from '../lib/JUPYTERLAB_FILE_LOADER_vtkpointcloud.bundle.js';
+
 
 /**
  * The default mime type for the extension.
@@ -37,6 +39,12 @@ class OutputWidget extends Widget implements IRenderMime.IRenderer {
   renderModel(model: IRenderMime.IMimeModel): Promise<void> {
     //console.log(`OutputWidget.renderModel() ${this._mimeType}`);
     //console.dir(model);
+
+    const data:ArrayBuffer = new ArrayBuffer(0);
+    const lasFile = new vtkpointcloud.LASFile(data);
+    console.log('LASFile instance:');
+    console.dir(lasFile);
+
     this.node.textContent = this._mimeType;
     return Promise.resolve();
   }  // renderModel()
