@@ -4,7 +4,7 @@ import unittest
 from . import utils
 from jupyterlab_geojs import GeoJSMap, gdalutils
 
-
+@unittest.skip('requires vtkjs layers')
 class TestPointCloudFeatures(unittest.TestCase):
 
     def test_las_100points(self):

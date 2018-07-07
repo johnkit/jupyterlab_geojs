@@ -28,8 +28,8 @@ class GeoJSFeatureLayer:
         # Handle special cases first
         if feature_type == 'geojson':
             feature = GeoJSONFeature(**kwargs)
-        elif feature_type == 'pointcloud':
-            feature = PointCloudFeature(**kwargs)
+        # elif feature_type == 'pointcloud':
+        #     feature = PointCloudFeature(**kwargs)
         elif feature_type == 'raster':
             feature = RasterFeature(**kwargs)
         else:

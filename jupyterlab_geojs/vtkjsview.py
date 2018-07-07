@@ -2,6 +2,9 @@ import logging
 
 from IPython.display import display, JSON
 
+from .pointcloudfeature import PointCloudFeature
+
+
 # A display class for vtk.js that can be used in JupyterLab notebooks:
 #   from jupyterlab_geojs import VtkJSView
 #   VtkJSView()
@@ -15,6 +18,7 @@ class VtkJSView(JSON):
         """
         super(VtkJSView, self).__init__()
         self._logger = None
+        self._pointcloud_feature = None
 
 
     def create_logger(self, folder, filename='vtkjsview.log'):
@@ -33,14 +37,28 @@ class VtkJSView(JSON):
         self._logger.addHandler(fh)
         return self._logger
 
+    def create_pointcloud_feature(self, **kwargs):
+        ''''''
+        if self._pointcloud_feature:
+            raise Exception('Sorry - current version only supports 1 pointcloud')
+
+        self._pointcloud_feature = PointCloudFeature(**kwargs)
+        return self._pointcloud_feature
+
+
+    def _build_data(self):
+        data = dict()  # return value
+        if self._pointcloud_feature:
+            data = self._pointcloud_feature._build_data()
+        return data
 
     def _ipython_display_(self):
         ''''''
-        data = dict()
-
         if self._logger is not None:
             self._logger.debug('Enter VtkJSView._ipython_display_()')
-        #data = self._build_data()
+
+        data = self._build_data()
+
         bundle = {
             MIME_TYPE: data,
             'text/plain': '<jupyterlab_geojs.VtkJSView object>'
