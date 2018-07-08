@@ -2,9 +2,11 @@ import { IRenderMime } from '@jupyterlab/rendermime-interfaces';
 
 import { Widget } from '@phosphor/widgets';
 
-import '../style/index.css';
+import * as b64ab from 'base64-arraybuffer';
 
 import * as vtkpointcloud from '../lib/JUPYTERLAB_FILE_LOADER_vtkpointcloud.bundle.js';
+
+import '../style/index.css';
 
 
 /**
@@ -39,15 +41,33 @@ class OutputWidget extends Widget implements IRenderMime.IRenderer {
   renderModel(model: IRenderMime.IMimeModel): Promise<void> {
     //console.log(`OutputWidget.renderModel() ${this._mimeType}`);
     //console.dir(model);
-
-    const data:ArrayBuffer = new ArrayBuffer(0);
-    const lasFile = new vtkpointcloud.LASFile(data);
-    console.log('LASFile instance:');
+    const stringData = model.data[this._mimeType] as string;
+    const lasFile: vtkpointcloud.LASFile = this._newLASFile(stringData);
+    console.log(`LASFile instance:`);
+    console.log(`  version ${lasFile.versionAsString}`);
+    console.log(`  formatId ${lasFile.formatId}`);
     console.dir(lasFile);
 
     this.node.textContent = this._mimeType;
     return Promise.resolve();
   }  // renderModel()
+
+
+  /**
+   * Creates LASFile instance.
+   */
+  _newLASFile(stringData: string): vtkpointcloud.LASFile {
+    let lasFile: vtkpointcloud.LASFile;
+    try {
+      const binaryData: ArrayBuffer = b64ab.decode(stringData);
+      lasFile = new vtkpointcloud.LASFile(binaryData);
+      return lasFile;
+    }
+    catch(err) {
+      alert(err);
+      return;
+    }
+  }
 
   private _mimeType: string;
 }  // OutputWidget

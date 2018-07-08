@@ -4,6 +4,8 @@
 var LASFile = function(arraybuffer) {
   console.log('LASFile constructor');
   this.arraybuffer = arraybuffer;
+  this.versionAsString = 'unknown';
+  this.formatId = -1;
 }
 
 
